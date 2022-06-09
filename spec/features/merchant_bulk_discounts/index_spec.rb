@@ -59,7 +59,9 @@ RSpec.describe 'merchant bulk discount index page', type: :feature do
         expect(page).to have_content('Discount: %30')
         expect(page).to have_content('Max Quantity: 15')
         expect(page).to have_link("##{bulk3.id} Discount Information")
+        click_link "##{bulk3.id} Discount Information"
       end
+      expect(current_path).to eq("/merchants/#{merch.id}/bulk_discounts/#{bulk3.id}")
       expect(page).to_not have_link "##{bulk4.id} Discount Information"
     end
   end
