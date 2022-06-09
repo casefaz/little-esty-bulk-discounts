@@ -4,5 +4,6 @@
 <div id="discount-<%= disc.id %>">
   <p>Discount: %<%= disc.percentage %></p>
   <p>Max Quantity: <%= disc.quantity_threshold %></p>
+  <%= link_to "##{disc.id} Discount Information", "/merchants/#{@merchant.id}/bulk_discounts/#{disc.id}" %>
   </div>
 <% end %>
