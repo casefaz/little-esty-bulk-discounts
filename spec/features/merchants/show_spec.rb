@@ -110,4 +110,13 @@ RSpec.describe 'Merchants show page', type: :feature do
       end
     end
   end
+
+  describe 'merchant bulk discounts index' do 
+    it 'has a link to view all discounts' do 
+      visit "/merchants/#{merchants[0].id}/dashboard"
+
+      click_link "Bulk Discounts"
+      expect(current_path).to eq("/merchants/#{merchants[0].id}/bulk_discounts")
+    end
+  end
 end
