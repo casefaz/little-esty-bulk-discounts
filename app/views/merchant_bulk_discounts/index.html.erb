@@ -1,0 +1,8 @@
+<h3>Bulk Discounts</h3>
+
+<% @merchant.bulk_discounts.each do |disc| %>
+<div id="discount-<%= disc.id %>">
+  <p>Discount: %<%= disc.percentage %></p>
+  <p>Max Quantity: <%= disc.quantity_threshold %></p>
+  </div>
+<% end %>

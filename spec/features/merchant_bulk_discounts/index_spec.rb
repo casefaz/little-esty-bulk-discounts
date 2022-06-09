@@ -15,17 +15,17 @@ RSpec.describe 'merchant bulk discount index page', type: :feature do
 
       expect(page).to have_content("Bulk Discounts")
 
-      within "##{bulk1.id}" do 
+      within "#discount-#{bulk1.id}" do 
         expect(page).to have_content('Discount: %20')
         expect(page).to have_content('Max Quantity: 10')
       end
 
-      within "##{bulk2.id}" do 
+      within "#discount-#{bulk2.id}" do 
         expect(page).to have_content('Discount: %15')
         expect(page).to have_content('Max Quantity: 5')
       end
 
-      within "##{bulk3.id}" do 
+      within "#discount-#{bulk3.id}" do 
         expect(page).to have_content('Discount: %30')
         expect(page).to have_content('Max Quantity: 15')
       end
