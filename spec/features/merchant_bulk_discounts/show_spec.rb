@@ -15,4 +15,16 @@ RSpec.describe 'merchant bulk discounts show page', type: :feature do
       expect(page).to_not have_content(bulk2.percentage)
     end
   end
+
+  describe 'merchant bulk discount edit' do 
+    it 'has a link to edit the discount' do 
+      merch = create(:merchant)
+      bulk1 = create(:bulk_discount, merchant: merch)
+
+      visit merchant_bulk_discount_path(merch.id, bulk1.id)
+
+      click_link "Update Bulk discount"
+      expect(current_path).to eq edit_merchant_bulk_discount_path(merch.id, bulk1.id)
+    end
+  end
 end
