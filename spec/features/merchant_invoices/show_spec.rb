@@ -85,16 +85,82 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
   end
 
   describe "User Story 4 - Merchant Invoice Show Page: Total Revenue" do
-    xit "shows the total revenue of all items on the invoice" do
-      visit "/merchants/#{merchants[0].id}/invoices/#{@invoices[0].id}"
+    it "shows the total revenue of all items on the invoice" do
+      merchants = create_list(:merchant, 2)
+      customers = create_list(:customer, 6)
+  
+      item1 = create(:item, merchant: merchants[0])
+      item2 = create(:item, merchant: merchants[1])
+  
+      invoice1 = create(:invoice, customer: customers[0])
+      invoice2 = create(:invoice, customer: customers[1])
+      invoice3 = create(:invoice, customer: customers[2])
+      invoice4 = create(:invoice, customer: customers[3])
+      invoice5 = create(:invoice, customer: customers[4])
+      invoice6 = create(:invoice, customer: customers[5])
+  
+      transaction1 = create(:transaction, invoice: invoice1, result: 1)
+      transaction2 = create(:transaction, invoice: invoice1, result: 1)
+      transaction3 = create(:transaction, invoice: invoice2, result: 0)
+      transaction4 = create(:transaction, invoice: invoice2, result: 1)
+      transaction5 = create(:transaction, invoice: invoice3, result: 0)
+      transaction6 = create(:transaction, invoice: invoice3, result: 0)
+      transaction7 = create(:transaction, invoice: invoice4, result: 0)
+      transaction8 = create(:transaction, invoice: invoice4, result: 1)
+      transaction9 = create(:transaction, invoice: invoice5, result: 0)
+      transaction10 = create(:transaction, invoice: invoice5, result: 1)
+      transaction11 = create(:transaction, invoice: invoice6, result: 0)
+      transaction12 = create(:transaction, invoice: invoice6, result: 1)
+  
+      invoice_item1 = create(:invoice_item, item: item1, invoice: invoice1, status: 0)
+      invoice_item2 = create(:invoice_item, item: item2, invoice: invoice2, status: 1)
+      invoice_item3 = create(:invoice_item, item: item1, invoice: invoice3, status: 1)
+      invoice_item4 = create(:invoice_item, item: item2, invoice: invoice4, status: 0)
+      invoice_item5 = create(:invoice_item, item: item1, invoice: invoice5, status: 0)
+      invoice_item6 = create(:invoice_item, item: item2, invoice: invoice6, status: 1)
 
-      expect(page).to have_content("Total Revenue: #{@invoices[0].total_revenue}")
+      visit "/merchants/#{merchants[0].id}/invoices/#{invoice1.id}"
+
+      expect(page).to have_content("Total Revenue: #{invoice1.total_revenue}")
     end
   end
 
   describe "User Story 5 - Merchant Invoice Show Page: Update Item Status" do
-    xit "has a select field button for invoice item's status and has a button to update the status" do
-      visit "/merchants/#{merchants[0].id}/invoices/#{@invoices[0].id}"
+    it "has a select field button for invoice item's status and has a button to update the status" do
+      merchants = create_list(:merchant, 2)
+      customers = create_list(:customer, 6)
+  
+      item1 = create(:item, merchant: merchants[0])
+      item2 = create(:item, merchant: merchants[1])
+  
+      invoice1 = create(:invoice, customer: customers[0])
+      invoice2 = create(:invoice, customer: customers[1])
+      invoice3 = create(:invoice, customer: customers[2])
+      invoice4 = create(:invoice, customer: customers[3])
+      invoice5 = create(:invoice, customer: customers[4])
+      invoice6 = create(:invoice, customer: customers[5])
+  
+      transaction1 = create(:transaction, invoice: invoice1, result: 1)
+      transaction2 = create(:transaction, invoice: invoice1, result: 1)
+      transaction3 = create(:transaction, invoice: invoice2, result: 0)
+      transaction4 = create(:transaction, invoice: invoice2, result: 1)
+      transaction5 = create(:transaction, invoice: invoice3, result: 0)
+      transaction6 = create(:transaction, invoice: invoice3, result: 0)
+      transaction7 = create(:transaction, invoice: invoice4, result: 0)
+      transaction8 = create(:transaction, invoice: invoice4, result: 1)
+      transaction9 = create(:transaction, invoice: invoice5, result: 0)
+      transaction10 = create(:transaction, invoice: invoice5, result: 1)
+      transaction11 = create(:transaction, invoice: invoice6, result: 0)
+      transaction12 = create(:transaction, invoice: invoice6, result: 1)
+  
+      invoice_item1 = create(:invoice_item, item: item1, invoice: invoice1, status: 0)
+      invoice_item2 = create(:invoice_item, item: item2, invoice: invoice2, status: 1)
+      invoice_item3 = create(:invoice_item, item: item1, invoice: invoice3, status: 1)
+      invoice_item4 = create(:invoice_item, item: item2, invoice: invoice4, status: 0)
+      invoice_item5 = create(:invoice_item, item: item1, invoice: invoice5, status: 0)
+      invoice_item6 = create(:invoice_item, item: item2, invoice: invoice6, status: 1)
+
+      visit "/merchants/#{merchants[0].id}/invoices/#{invoice1.id}"
 
       expect(invoice_item1.status).to eq("pending")
 
@@ -107,7 +173,7 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
         click_button "Update Item Status"
       end
 
-      expect(current_path).to eq("/merchants/#{merchants[0].id}/invoices/#{@invoices[0].id}")
+      expect(current_path).to eq("/merchants/#{merchants[0].id}/invoices/#{invoice1.id}")
       invoice_item1.reload
       expect(invoice_item1.status).to eq("packaged")
 
