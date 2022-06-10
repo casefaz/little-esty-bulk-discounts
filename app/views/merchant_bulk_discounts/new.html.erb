@@ -1,0 +1,7 @@
+<h3>New Form</h3>
+<%= render partial: 'form', locals: {model: [@merchant, @discount]} %>
+<% flash.each do |type, msg| %>
+  <div>
+    <%= msg %>
+  </div>
+<% end %>
