@@ -5,6 +5,12 @@
   <p>Discount: %<%= disc.percentage %></p>
   <p>Max Quantity: <%= disc.quantity_threshold %></p>
   <%= link_to "##{disc.id} Discount Information", "/merchants/#{@merchant.id}/bulk_discounts/#{disc.id}" %>
+  <%= link_to "Delete Discount ##{disc.id}", "/merchants/#{@merchant.id}/bulk_discounts/#{disc.id}", method: :delete %>
   </div>
 <% end %>
 <%= link_to 'Create New Discount', new_merchant_bulk_discount_path(@merchant.id) %>
+<% flash.each do |type, msg| %>
+  <div>
+    <%= msg %>
+  </div>
+<% end %>
