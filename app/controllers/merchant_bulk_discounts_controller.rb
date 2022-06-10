@@ -35,6 +35,17 @@ class MerchantBulkDiscountsController < ApplicationController
     @discount = BulkDiscount.find(params[:id])
   end
 
+  def update 
+    merchant = Merchant.find(params[:merchant_id])
+    discount = BulkDiscount.find(params[:id])
+    if discount.update(bulk_discount_params)
+      redirect_to merchant_bulk_discount_path(merchant.id, discount.id)
+    else
+      redirect_to edit_merchant_bulk_discount_path(merchant.id, discount.id), notice: 'Discount not updated, add missing field'
+    end
+
+  end
+
   private
     def bulk_discount_params
       params.require(:bulk_discount).permit(:percentage, :quantity_threshold)
