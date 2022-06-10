@@ -16,23 +16,21 @@ RSpec.describe InvoiceItem, type: :model do
     it { should define_enum_for(:status).with_values(["pending", "packaged", "shipped"])}
   end
 
-  let!(:merchant1) { create(:merchant) }
+  # let!(:merchant1) { create(:merchant) }
 
-  let!(:item1) { create(:item, merchant: merchant1) }
-  let!(:item2) { create(:item, merchant: merchant1) }
+  # let!(:item1) { create(:item, merchant: merchant1) }
+  # let!(:item2) { create(:item, merchant: merchant1) }
 
-  let!(:customer1) { create(:customer) }
+  # let!(:customer1) { create(:customer) }
 
-  let!(:invoice1) { create(:invoice, customer: customer1) }
+  # let!(:invoice1) { create(:invoice, customer: customer1) }
 
-  let!(:transaction1) { create(:transaction, invoice: invoice1, result: 1) }
+  # let!(:transaction1) { create(:transaction, invoice: invoice1, result: 1) }
 
-  let!(:invoice_item1) { create(:invoice_item, item: item1, invoice: invoice1, unit_price: 3011) }
-  let!(:invoice_item2) { create(:invoice_item, item: item2, invoice: invoice1, unit_price: 2524) }
+  # let!(:invoice_item1) { create(:invoice_item, item: item1, invoice: invoice1, unit_price: 3011) }
+  # let!(:invoice_item2) { create(:invoice_item, item: item2, invoice: invoice1, unit_price: 2524) }
 
-  describe "#instance methods" do
-    it "#unit_price_converted shows unit price as a currency format" do
-      expect(invoice_item1.unit_price_converted).to eq("$30.11")
-    end
+  describe 'instance methods' do 
+    it ''
   end
 end

@@ -9,7 +9,7 @@ class Invoice < ApplicationRecord
   enum status:["in progress", "completed", "cancelled"]
 
   def total_revenue
-    helpers.number_to_currency((self.invoice_items.sum(:unit_price).to_f)/100)
+    invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
   def self.not_shipped
