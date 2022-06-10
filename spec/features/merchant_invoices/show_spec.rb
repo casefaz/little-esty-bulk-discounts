@@ -77,8 +77,8 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
         expect(page).to have_content(items[0].name)
         expect(page).to_not have_content(items2[1].name)
         expect(page).to have_content(invoice_item1.quantity)
-        expect(page).to have_content(invoice_item1.unit_price_converted)
-        expect(page).to_not have_content(invoice_item2.unit_price_converted)
+        expect(page).to have_content(invoice_item1.unit_price / 100.0)
+        expect(page).to_not have_content(invoice_item2.unit_price / 100.0)
         expect(page).to have_content(invoice_item1.status)
       end
     end
@@ -161,7 +161,7 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
       invoice_item6 = create(:invoice_item, item: item2, invoice: invoice6, status: 1)
 
       visit "/merchants/#{merchants[0].id}/invoices/#{invoice1.id}"
-
+      
       expect(invoice_item1.status).to eq("pending")
 
       within "#invoiceItem-#{invoice_item1.id}" do
