@@ -18,6 +18,7 @@ class Invoice < ApplicationRecord
   end
 
   def merch_discounted_rev(merchant)
+    # binding.pry
     invoice_items.sum { |invoice_item| invoice_item.discounted_rev }
   end
 

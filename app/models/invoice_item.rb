@@ -15,7 +15,7 @@ class InvoiceItem < ApplicationRecord
 
   def discounted_rev
     if greatest_discount != nil
-      (quantity * unit_price) - (quantity * (unit_price * greatest_discount.percentage / 100))
+      (quantity * unit_price) - (quantity * (unit_price * greatest_discount.percentage / 100.0))
     else 
       quantity * unit_price
     end 

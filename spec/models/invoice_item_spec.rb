@@ -45,7 +45,7 @@ RSpec.describe InvoiceItem, type: :model do
       expect(invoice_item1.greatest_discount).to_not eq(bulk2)
     end
 
-    it 'returns the total revenue with discount if applicable' do 
+    it 'returns the total revenue with discount if applicable and doesnt subtract the discount if not applicable' do 
       merchant = create(:merchant)
       items = create_list(:item, 2, merchant: merchant)
       invoices = create_list(:invoice, 3)
