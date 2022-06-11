@@ -63,6 +63,20 @@ RSpec.describe Invoice, type: :model do
       invoice_item5 = create(:invoice_item, item: item2, invoice: invoices[3], unit_price: 2524, quantity: 25, status: 2)
       expect(invoices[1].total_merch_rev(merchant1.id)).to eq(60384)
     end
+
+    it 'can return the total discounted revenue for a merchant' do 
+      merchant = create(:merchant)
+      items = create_list(:item, 2, merchant: merchant)
+      invoices = create_list(:invoice, 3)
+      invoice_item1 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 50000, quantity: 20)
+      invoice_item2 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 2500, quantity: 5)
+      invoice_item3 = create(:invoice_item, item: items[1], invoice: invoices[1], unit_price: 3000, quantity: 15)
+      bulk1 = create(:bulk_discount, merchant: merchant)
+      bulk2 = create(:bulk_discount, quantity_threshold: 15, percentage: 15, merchant: merchant)
+
+      expect(invoices[2].merch_discounted_rev(merchant.id)).to eq(812500.0)
+      expect(invoices[1].merch_discounted_rev(merchant.id)).to eq(36000.0)
+    end
   end
 
   describe ".class methods" do

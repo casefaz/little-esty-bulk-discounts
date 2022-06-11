@@ -17,6 +17,10 @@ class Invoice < ApplicationRecord
     .sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
+  def merch_discounted_rev(merchant)
+    invoice_items.sum { |invoice_item| invoice_item.discounted_rev }
+  end
+
   def self.not_shipped
     all
     .joins(:invoice_items)
