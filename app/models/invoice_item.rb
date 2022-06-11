@@ -9,13 +9,15 @@ class InvoiceItem < ApplicationRecord
   validates_numericality_of :unit_price
   enum status:["pending", "packaged", "shipped"]
 
-  def unit_price_converted
-    helpers.number_to_currency(self.unit_price.to_f/100)
+  def greatest_discount
+    bulk_discounts.where('bulk_discounts.quantity_threshold <= ?', quantity).order(percentage: :desc).first
   end
 
-private
-  # Helper Methods
-  def helpers
-  ActionController::Base.helpers
+  def discounted_rev
+    if greatest_discount != nil
+      (quantity * unit_price) - (quantity * (unit_price * greatest_discount.percentage / 100.0))
+    else 
+      quantity * unit_price
+    end 
   end
 end

@@ -23,6 +23,8 @@
     <p><%= "Status: #{@invoice.status}" %> </p>
     <p><%= "Created on: #{@invoice.created_at.strftime("%A, %B %d, %Y")}" %></p>
     <p><%= "Total Revenue: #{@invoice.total_revenue}" %></p>
+    <p>Total Revenue for <%= @merchant.name %> Before Discount: <%= number_to_currency(@invoice.total_merch_rev(@merchant.id) / 100) %></p>
+    <p>Total Revenue for <%= @merchant.name %> After Discount: <%= number_to_currency(@invoice.merch_discounted_rev(@merchant.id) / 100) %></p>
     <h2>Customer</h2>
     <p> <%= "#{@invoice.customer.first_name} #{@invoice.customer.last_name}" %></p>
   </div>
@@ -41,7 +43,7 @@
         <tr id="invoiceItem-<%= invoice_item.id %>">
           <td> <%= invoice_item.item.name %></td>
           <td> <%= invoice_item.quantity %></td>
-          <td> <%= invoice_item.unit_price_converted %></td>
+          <td> <%= number_to_currency(invoice_item.unit_price / 100.0) %></td>
           <td>
             <%= form_with url: "/merchants/#{@merchant.id}/invoices/#{@invoice.id}?invoice_item_id=#{invoice_item.id}", method: :patch do |form| %>
               <%= form.select :status, ["pending", "packaged", "shipped"], :selected => invoice_item.status %>

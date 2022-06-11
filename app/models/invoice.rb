@@ -9,11 +9,20 @@ class Invoice < ApplicationRecord
   enum status:["in progress", "completed", "cancelled"]
 
   def total_revenue
-    helpers.number_to_currency((self.invoice_items.sum(:unit_price).to_f)/100)
+    invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
+  end
+
+  def total_merch_rev(merchant)
+    items.where(merchant_id: merchant)
+    .sum('invoice_items.unit_price * invoice_items.quantity')
+  end
+
+  def merch_discounted_rev(merchant)
+    # binding.pry
+    invoice_items.sum { |invoice_item| invoice_item.discounted_rev }
   end
 
   def self.not_shipped
-    # binding.pry
     all
     .joins(:invoice_items)
     .where.not("invoice_items.status = ?", 2)
