@@ -1,28 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe 'Admin Invoice Show Page', type: :feature do
-  let!(:merchant1) { create(:merchant) }
-
-  let!(:item1) { create(:item, merchant: merchant1) }
-  let!(:item2) { create(:item, merchant: merchant1) }
-
-  let!(:customer1) { create(:customer) }
-
-  let!(:invoice1) { create(:invoice, customer: customer1, status: 0) }
-
-  let!(:transaction1) { create(:transaction, invoice: invoice1, result: 1) }
-
-  let!(:invoice_item1) { create(:invoice_item, item: item1, invoice: invoice1, unit_price: 3011, quantity: 5) }
-  let!(:invoice_item2) { create(:invoice_item, item: item2, invoice: invoice1, unit_price: 2524, quantity: 3) }
   it 'lists invoice attributes' do
+    customer1 = create(:customer)
+    invoice1 = create(:invoice, customer: customer1, status: 0)
+
     visit "/admin/invoices/#{invoice1.id}"
-    # expect(page).to have_content("Status: #{invoice1.status}")
     expect(page).to have_content("Invoice ##{invoice1.id}")
     expect(page).to have_content("Created on: #{invoice1.created_at.strftime('%A, %B %d, %Y')}")
     expect(page).to have_content("#{invoice1.customer.first_name} #{invoice1.customer.last_name}")
   end
 
   it 'lists items on the invoice' do
+    merchant1 = create(:merchant)
+    item1 = create(:item, merchant: merchant1)
+    item2 = create(:item, merchant: merchant1)
+    customer1 = create(:customer)
+    invoice1 = create(:invoice, customer: customer1, status: 0)
+    transaction1 = create(:transaction, invoice: invoice1, result: 1)
+    invoice_item1 = create(:invoice_item, item: item1, invoice: invoice1, unit_price: 3011, quantity: 5)
+    invoice_item2 = create(:invoice_item, item: item2, invoice: invoice1, unit_price: 2524, quantity: 3)
+
     visit "/admin/invoices/#{invoice1.id}"
     within '#itemtable' do
       expect(page).to have_content('Item Name')
@@ -40,14 +38,25 @@ RSpec.describe 'Admin Invoice Show Page', type: :feature do
   end
 
   it 'shows total revenue that will be generated from this invoice' do
+    merchant1 = create(:merchant)
+    item1 = create(:item, merchant: merchant1)
+    item2 = create(:item, merchant: merchant1)
+    customer1 = create(:customer)
+    invoice1 = create(:invoice, customer: customer1, status: 0)
+    transaction1 = create(:transaction, invoice: invoice1, result: 1)
+    invoice_item1 = create(:invoice_item, item: item1, invoice: invoice1, unit_price: 3011, quantity: 5)
+    invoice_item2 = create(:invoice_item, item: item2, invoice: invoice1, unit_price: 2524, quantity: 3)
+
     visit "/admin/invoices/#{invoice1.id}"
 
     expect(page).to have_content('Total Revenue: $226.27')
   end
 
   it 'has a select field to update invoice status' do
-    visit "/admin/invoices/#{invoice1.id}"
+    customer1 = create(:customer)
+    invoice1 = create(:invoice, customer: customer1, status: 0)
 
+    visit "/admin/invoices/#{invoice1.id}"
     expect(invoice1.status).to eq('in progress')
 
     have_select :status,
