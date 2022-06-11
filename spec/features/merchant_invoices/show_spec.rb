@@ -198,7 +198,7 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
 
       visit merchant_invoice_path(merchant.id, invoices[2].id)
       expect(page).to have_content("Total Revenue for #{merchant.name} Before Discount: $10,125.00") 
-      expect(page).to have_content("Total Revenue for #{merchant.name} After Discount: $812.50")
+      expect(page).to have_content("Total Revenue for #{merchant.name} After Discount: $8,125.00")
       expect(page).to_not have_content("Total Revenue for #{merchant.name}: $25.00")
     end
   end
