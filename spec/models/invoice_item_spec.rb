@@ -30,9 +30,18 @@ RSpec.describe InvoiceItem, type: :model do
   # let!(:invoice_item1) { create(:invoice_item, item: item1, invoice: invoice1, unit_price: 3011) }
   # let!(:invoice_item2) { create(:invoice_item, item: item2, invoice: invoice1, unit_price: 2524) }
 
-  describe 'class methods' do 
-    it 'returns all invoice_items with the same item' do 
-      
+  describe 'instance methods' do 
+    it 'finds discounts that are applicable' do 
+      merchant = create(:merchant)
+      items = create_list(:item, 2, merchant: merchant)
+      invoices = create_list(:invoice, 3)
+      invoice_item1 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 50000, quantity: 20)
+      invoice_item2 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 2500, quantity: 5)
+      bulk1 = create(:bulk_discount)
+      bulk2 = create(:bulk_discount, quantity_threshold: 15, percentage: 15)
+
+      expect(invoice_item1.greatest_discount).to eq(bulk1)
+      expect(invoice_item2.greatest_discount).to eq(nil)
     end
   end
 end

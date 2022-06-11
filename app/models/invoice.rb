@@ -13,13 +13,11 @@ class Invoice < ApplicationRecord
   end
 
   def total_merch_rev(merchant)
-    # binding.pry 
     items.where(merchant_id: merchant)
     .sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
   def self.not_shipped
-    # binding.pry
     all
     .joins(:invoice_items)
     .where.not("invoice_items.status = ?", 2)
