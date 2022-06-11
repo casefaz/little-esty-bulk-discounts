@@ -85,7 +85,7 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
   end
 
   describe "User Story 4 - Merchant Invoice Show Page: Total Revenue" do
-    it "shows the total revenue of all items on the invoice" do
+    it "shows the total revenue of all items on an invoice" do
       merchants = create_list(:merchant, 2)
       customers = create_list(:customer, 6)
   
@@ -182,6 +182,37 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
         selected: "packaged",
         options: ["pending", "packaged", "shipped"]
       end
+    end
+  end
+
+  describe 'Merchant Invoice: Total Revenue and Discounted Revenue' do 
+    it 'displays the total revenue for a merchant pre discount' do 
+      #any revenue from invoices with any items belonging to that merchant - if items.merchant_id: merchant_id - calculate the total revenue
+      merchant = create(:merchant)
+      customer = create(:customer)
+      items = create_list(:item, 4, merchant: merchant)
+  
+      invoice1 = create(:invoice, customer: customer)
+      invoice2 = create(:invoice, customer: customer)
+      invoice3 = create(:invoice, customer: customer)
+
+      transaction1 = create(:transaction, invoice: invoice1, result: 1)
+      transaction2 = create(:transaction, invoice: invoice2, result: 0)
+      transaction3 = create(:transaction, invoice: invoice2, result: 0)
+      transaction4 = create(:transaction, invoice: invoice2, result: 1)
+      transaction5 = create(:transaction, invoice: invoice2, result: 0)
+      transaction6 = create(:transaction, invoice: invoice3, result: 0)
+
+      invoice_item1 = create(:invoice_item, item: items[0], invoice: invoice1, quantity: 5, unit_price: 1000)
+      invoice_item2 = create(:invoice_item, item: items[1], invoice: invoice2, quantity: 10, unit_price: 3000) #300
+      invoice_item3 = create(:invoice_item, item: items[2], invoice: invoice2, quantity: 5, unit_price: 2000) #100
+      invoice_item4 = create(:invoice_item, item: items[3], invoice: invoice2, quantity: 22, unit_price: 5000) #1,100
+      invoice_item5 = create(:invoice_item, item: items[0], invoice: invoice2, quantity: 15, unit_price: 1500)
+      invoice_item6 = create(:invoice_item, item: items[1], invoice: invoice3, quantity: 100, unit_price: 2500)
+
+      visit merchant_invoice_path(merchant.id, invoice2.id)
+      expect(page).to have_content("Total Revenue for #{merchant.name}: $1,500.00") #total revenue for merchant from 'this' invoice - invoice2(invoice_item2-5)
+      expect(page).to_not have_content("Total Revenue for #{merchant.name}: $25.00")
     end
   end
 end

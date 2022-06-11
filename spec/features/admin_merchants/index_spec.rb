@@ -211,10 +211,4 @@ RSpec.describe "Admin Merchants Index Page ", type: :feature do
       end
     end
   end
-
-  describe 'Total Revenue and Discounted Revenue' do 
-    xit 'displays the total revenue for a merchant from this invoice pre-discounts' do 
-
-    end
-  end
 end
