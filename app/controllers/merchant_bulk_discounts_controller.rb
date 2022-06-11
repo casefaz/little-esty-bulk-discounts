@@ -5,6 +5,7 @@ class MerchantBulkDiscountsController < ApplicationController
   end
 
   def show
+    # binding.pry
     @merchant = Merchant.find(params[:merchant_id])
     @discount = BulkDiscount.find(params[:id])
   end

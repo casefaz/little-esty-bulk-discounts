@@ -202,4 +202,56 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
       expect(page).to_not have_content("Total Revenue for #{merchant.name}: $25.00")
     end
   end
+
+  describe 'Link to applied discounts' do 
+    it 'has a link next to each invoice item for the bulk discount that was applied' do 
+      merchant = create(:merchant)
+      items = create_list(:item, 2, merchant: merchant)
+      invoices = create_list(:invoice, 3)
+      invoice_item1 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 50000, quantity: 20)
+      invoice_item2 = create(:invoice_item, item: items[1], invoice: invoices[2], unit_price: 2500, quantity: 5)
+      invoice_item3 = create(:invoice_item, item: items[1], invoice: invoices[1], unit_price: 3000, quantity: 25)
+      bulk1 = create(:bulk_discount, merchant: merchant)
+      bulk2 = create(:bulk_discount, quantity_threshold: 25, percentage: 30.0, merchant: merchant)
+
+      visit merchant_invoice_path(merchant.id, invoices[2].id)
+
+      expect(page).to have_content('Bulk Discount')
+      within "#invoiceItem-#{invoice_item1.id}" do 
+        expect(page).to have_link('Discount Applied')
+        click_link 'Discount Applied'
+      end
+      expect(current_path).to eq(merchant_bulk_discount_path(merchant.id, bulk1.id))
+      expect(page).to have_content(bulk1.percentage)
+      expect(page).to have_content(bulk1.quantity_threshold)
+      expect(page).to_not have_content(bulk2.percentage)
+
+      visit merchant_invoice_path(merchant.id, invoices[1].id)
+      within "#invoiceItem-#{invoice_item3.id}" do 
+        expect(page).to have_link('Discount Applied')
+        click_link 'Discount Applied'
+      end
+      expect(current_path).to eq(merchant_bulk_discount_path(merchant.id, bulk2.id))
+      expect(page).to have_content(bulk2.percentage)
+      expect(page).to have_content(bulk2.quantity_threshold)
+      expect(page).to_not have_content(bulk1.percentage)
+    end
+
+    it 'has no link if no discount was applied' do
+      merchant = create(:merchant)
+      items = create_list(:item, 2, merchant: merchant)
+      invoices = create_list(:invoice, 3)
+      invoice_item1 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 50000, quantity: 20)
+      invoice_item2 = create(:invoice_item, item: items[1], invoice: invoices[2], unit_price: 2500, quantity: 5)
+      invoice_item3 = create(:invoice_item, item: items[1], invoice: invoices[1], unit_price: 3000, quantity: 25)
+      bulk1 = create(:bulk_discount, merchant: merchant)
+      bulk2 = create(:bulk_discount, quantity_threshold: 25, percentage: 30.0, merchant: merchant)
+
+      visit merchant_invoice_path(merchant.id, invoices[2].id)
+
+      within "#invoiceItem-#{invoice_item2.id}" do 
+        expect(page).to have_content('no discount applied')
+      end
+    end
+  end
 end

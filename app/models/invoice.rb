@@ -32,10 +32,4 @@ class Invoice < ApplicationRecord
   def formatted_date
     created_at.strftime("%A, %B %d, %Y")
   end
-
-private
-# Helper Methods
-  def helpers
-  ActionController::Base.helpers
-  end
 end

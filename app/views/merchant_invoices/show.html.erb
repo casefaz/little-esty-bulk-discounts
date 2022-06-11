@@ -34,14 +34,21 @@
 <div class="page-defaults" id="itemtable">
   <table>
     <tr>
-      <th><h2> Item Name </h2></th>
-      <th><h2> Quantity </h2></th>
-      <th><h2> Unit Price </h2></th>
-      <th><h2> Status </h2></th>
+      <th><h4> Item Name </h4></th>
+      <th><h4> Bulk Discount </h4></th>
+      <th><h4> Quantity </h4></th>
+      <th><h4> Unit Price </h4></th>
+      <th><h4> Status </h4></th>
     </tr>
       <% @invoice.invoice_items.each do |invoice_item| %>
         <tr id="invoiceItem-<%= invoice_item.id %>">
           <td> <%= invoice_item.item.name %></td>
+          <td> 
+            <% if invoice_item.greatest_discount.nil? %>
+              <p>no discount applied</p>
+            <% else %>
+              <%= link_to 'Discount Applied', merchant_bulk_discount_path(@merchant.id, invoice_item.greatest_discount.id) %></td>
+            <% end %>
           <td> <%= invoice_item.quantity %></td>
           <td> <%= number_to_currency(invoice_item.unit_price / 100.0) %></td>
           <td>
