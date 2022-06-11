@@ -22,6 +22,10 @@ class Invoice < ApplicationRecord
     invoice_items.sum { |invoice_item| invoice_item.discounted_rev }
   end
 
+  def discounted_revenue
+    binding.pry
+  end
+
   def self.not_shipped
     all
     .joins(:invoice_items)
