@@ -216,12 +216,25 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
 
       visit merchant_invoice_path(merchant.id, invoices[2].id)
 
-      within "#itemtable" do 
-        expect(page).to have_content('Bulk Discount')
+      expect(page).to have_content('Bulk Discount')
+      within "#invoiceItem-#{invoice_item1.id}" do 
         expect(page).to have_link('Discount Applied')
         click_link 'Discount Applied'
       end
-      expect(current_path).to eq(merchant_bulk_discount_path(merchant.id))
+      expect(current_path).to eq(merchant_bulk_discount_path(merchant.id, bulk1.id))
+      expect(page).to have_content(bulk1.percentage)
+      expect(page).to have_content(bulk1.quantity_threshold)
+      expect(page).to_not have_content(bulk2.percentage)
+
+      visit merchant_invoice_path(merchant.id, invoices[1].id)
+      within "#invoiceItem-#{invoice_item3.id}" do 
+        expect(page).to have_link('Discount Applied')
+        click_link 'Discount Applied'
+      end
+      expect(current_path).to eq(merchant_bulk_discount_path(merchant.id, bulk2.id))
+      expect(page).to have_content(bulk2.percentage)
+      expect(page).to have_content(bulk2.quantity_threshold)
+      expect(page).to_not have_content(bulk1.percentage)
     end
   end
 end
