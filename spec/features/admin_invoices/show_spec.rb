@@ -74,4 +74,23 @@ RSpec.describe 'Admin Invoice Show Page', type: :feature do
                 selected: 'completed',
                 options: ['in progress', 'completed', 'cancelled']
   end
+
+  describe 'Admin Invoice Total and Discounted Revenue' do 
+    it 'shows the total revenue from this invoice' do 
+      merchant = create(:merchant)
+      items = create_list(:item, 2, merchant: merchant)
+      invoices = create_list(:invoice, 3)
+      invoice_item1 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 50000, quantity: 20)
+      invoice_item2 = create(:invoice_item, item: items[1], invoice: invoices[2], unit_price: 2500, quantity: 5)
+      invoice_item3 = create(:invoice_item, item: items[1], invoice: invoices[1], unit_price: 3000, quantity: 25)
+      bulk1 = create(:bulk_discount, merchant: merchant)
+      bulk2 = create(:bulk_discount, quantity_threshold: 25, percentage: 30.0, merchant: merchant)
+
+      visit invoice_path(invoices[1].id)
+      within "#leftSide2" do 
+        expect(page).to have_content('Total Revenue: $750.00')
+        expect(page).to have_content('Total Discounted Revenue: $562.50')
+      end
+    end
+  end
 end

@@ -21,15 +21,15 @@ RSpec.describe Invoice, type: :model do
       item1 = create(:item, merchant: merchant1)
       item2 = create(:item, merchant: merchant1)
       item3 = create(:item, merchant: merchant1)
-      invoices = create_list(:invoice, 4, customer: customer1, created_at: "2022-03-10 00:54:09 UTC")
-      transaction1 = create(:transaction, invoice: invoices[0], result: 1)
-      invoice_item1 = create(:invoice_item, item: item1, invoice: invoices[0], unit_price: 3011, quantity: 35, status: 2)
-      invoice_item2 = create(:invoice_item, item: item2, invoice: invoices[0], unit_price: 2524, quantity: 14, status: 1)
-      invoice_item3 = create(:invoice_item, item: item2, invoice: invoices[1], unit_price: 2524, quantity: 16, status: 0) 
-      invoice_item4 = create(:invoice_item, item: item3, invoice: invoices[1], unit_price: 5000, quantity: 4, status: 1) 
-      invoice_item5 = create(:invoice_item, item: item2, invoice: invoices[3], unit_price: 2524, quantity: 25, status: 2)
+      invoices = create_list(:invoice, 4, customer: customer1)
+      invoice_item1 = create(:invoice_item, item: item1, invoice: invoices[0], unit_price: 3011, quantity: 35)
+      invoice_item2 = create(:invoice_item, item: item2, invoice: invoices[0], unit_price: 2524, quantity: 14)
+      invoice_item3 = create(:invoice_item, item: item2, invoice: invoices[1], unit_price: 2524, quantity: 16) 
+      invoice_item4 = create(:invoice_item, item: item3, invoice: invoices[1], unit_price: 5000, quantity: 4)
+      invoice_item5 = create(:invoice_item, item: item2, invoice: invoices[3], unit_price: 2524, quantity: 25)
 
       expect(invoices[0].total_revenue).to eq(140721)
+      expect(invoices[1].total_revenue).to eq(60384)
     end
 
     it 'formats the date correctly' do
