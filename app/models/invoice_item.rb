@@ -9,4 +9,7 @@ class InvoiceItem < ApplicationRecord
   validates_numericality_of :unit_price
   enum status:["pending", "packaged", "shipped"]
 
+  def greatest_discount
+    bulk_discounts.where('bulk_discounts.quantity_threshold <= ?', quantity).order(percentage: :desc).first
+  end
 end

@@ -37,8 +37,8 @@ RSpec.describe InvoiceItem, type: :model do
       invoices = create_list(:invoice, 3)
       invoice_item1 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 50000, quantity: 20)
       invoice_item2 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 2500, quantity: 5)
-      bulk1 = create(:bulk_discount)
-      bulk2 = create(:bulk_discount, quantity_threshold: 15, percentage: 15)
+      bulk1 = create(:bulk_discount, merchant: merchant)
+      bulk2 = create(:bulk_discount, quantity_threshold: 15, percentage: 15, merchant: merchant)
 
       expect(invoice_item1.greatest_discount).to eq(bulk1)
       expect(invoice_item2.greatest_discount).to eq(nil)
