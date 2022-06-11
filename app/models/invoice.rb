@@ -12,6 +12,10 @@ class Invoice < ApplicationRecord
     invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
+  def total_rev(merchant_id)
+    InvoiceItems
+  end
+
   def self.not_shipped
     # binding.pry
     all

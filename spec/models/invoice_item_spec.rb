@@ -30,7 +30,9 @@ RSpec.describe InvoiceItem, type: :model do
   # let!(:invoice_item1) { create(:invoice_item, item: item1, invoice: invoice1, unit_price: 3011) }
   # let!(:invoice_item2) { create(:invoice_item, item: item2, invoice: invoice1, unit_price: 2524) }
 
-  describe 'instance methods' do 
-    it ''
+  describe 'class methods' do 
+    it 'returns all invoice_items with the same item' do 
+      
+    end
   end
 end
