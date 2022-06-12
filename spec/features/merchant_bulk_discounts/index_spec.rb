@@ -129,4 +129,17 @@ RSpec.describe 'Merchant Bulk Discount Index Page', type: :feature do
       expect(page).to have_content('Successful Destruction of Discount')
     end
   end
+
+  describe 'API Fetch' do 
+    it 'has a section that shows the next 3 upcoming holidays' do 
+      merch = create(:merchant)
+      visit merchant_bulk_discounts_path(merch.id)
+
+      expect(page).to have_content('Upcoming Holidays')
+      expect(page).to have_content(Holiday.first)
+      expect(page).to have_content(Holiday.second)
+      expect(page).to have_content(Holiday.third)
+      expect(page).to_not have_content(Holiday.fourth)
+    end
+  end
 end
