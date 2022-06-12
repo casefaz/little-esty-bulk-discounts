@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe 'form for new discount', type: :feature do 
-  describe 'merchant bulk discount create' do 
+RSpec.describe 'Form For New Discount', type: :feature do 
+  describe 'Merchant Bulk Discount Create' do 
     it 'has a form to add a new bulk discount' do 
       merch = create(:merchant)
       visit new_merchant_bulk_discount_path(merch.id)
@@ -24,7 +24,7 @@ RSpec.describe 'form for new discount', type: :feature do
       expect(page).to have_content("Error: Missing Field")
     end
 
-    it 'has new discount on index page' do 
+    it 'displays new discount on index page' do 
       merch = create(:merchant)
       visit new_merchant_bulk_discount_path(merch.id)
 
@@ -34,6 +34,7 @@ RSpec.describe 'form for new discount', type: :feature do
       click_on('Create Bulk discount')
       expect(current_path).to eq merchant_bulk_discounts_path(merch.id)
       expect(page).to have_content('Discount: %42')
+      expect(page).to have_content('Success! Discount Created')
     end
   end
 end

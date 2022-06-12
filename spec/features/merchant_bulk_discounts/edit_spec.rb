@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe 'bulk discount edit page', type: :feature do 
-  describe 'merchant bulk discount edit' do 
+RSpec.describe 'Bulk Discount Edit Page', type: :feature do 
+  describe 'Merchant Bulk Discount Edit' do 
     it 'has a prepopulated form' do 
       merch = create(:merchant)
       bulk1 = create(:bulk_discount, merchant: merch)

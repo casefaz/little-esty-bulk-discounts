@@ -49,7 +49,7 @@ RSpec.describe Invoice, type: :model do
       expect(invoices[0].formatted_date).to eq('Thursday, March 10, 2022')
     end
 
-    it 'returns the total merchant revenue' do 
+    it 'returns the total revenue specific to a merchant pre discount' do 
       merchant1 = create(:merchant)
       merchant2 = create(:merchant)
       item1 = create(:item, merchant: merchant1)
@@ -81,7 +81,7 @@ RSpec.describe Invoice, type: :model do
 
       expect(invoices[2].merch_discounted_rev(merchant.id)).to eq(812500)
       expect(invoices[1].merch_discounted_rev(merchant.id)).to eq(52500) 
-      expect(invoices[1].merch_discounted_rev(merchant2.id)).to eq(75000)
+      expect(invoices[1].merch_discounted_rev(merchant2.id)).to eq(75000)#no discount because merchant2 has no discounts because they're cheap
     end
 
     it 'can return the discounted revenue total for an invoice' do 
@@ -95,7 +95,8 @@ RSpec.describe Invoice, type: :model do
       bulk2 = create(:bulk_discount, quantity_threshold: 25, percentage: 30.0, merchant: merchant)
 
       expect(invoices[2].discounted_revenue).to eq(812500.0)
-      expect(invoices[2].discounted_revenue).to_not eq(1012500.0)
+      expect(invoices[1].discounted_revenue).to eq(52500.0)
+      expect(invoices[2].discounted_revenue).to_not eq(1012500.0) #price before the discount
     end
   end
 
