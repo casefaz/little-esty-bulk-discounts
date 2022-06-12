@@ -62,8 +62,8 @@ RSpec.describe Invoice, type: :model do
       invoice_item3 = create(:invoice_item, item: item2, invoice: invoices[1], unit_price: 2524, quantity: 16, status: 0) 
       invoice_item4 = create(:invoice_item, item: item3, invoice: invoices[1], unit_price: 5000, quantity: 4, status: 1) 
       invoice_item5 = create(:invoice_item, item: item4, invoice: invoices[1], unit_price: 2524, quantity: 25, status: 2)
-      expect(invoices[1].total_merch_rev(merchant1)).to eq(60384)
-      expect(invoices[1].total_merch_rev(merchant2)).to eq(63100)
+      expect(invoices[1].total_merch_rev(merchant1.id)).to eq(60384)
+      expect(invoices[1].total_merch_rev(merchant2.id)).to eq(63100)
     end
 
     it 'can return the total discounted revenue for a merchant if the discount applies' do 
@@ -79,9 +79,9 @@ RSpec.describe Invoice, type: :model do
       bulk1 = create(:bulk_discount, merchant: merchant)
       bulk2 = create(:bulk_discount, quantity_threshold: 25, percentage: 30.0, merchant: merchant)
 
-      expect(invoices[2].merch_discounted_rev(merchant)).to eq(812500)
-      expect(invoices[1].merch_discounted_rev(merchant)).to eq(52500) 
-      expect(invoices[1].merch_discounted_rev(merchant2)).to eq(75000)
+      expect(invoices[2].merch_discounted_rev(merchant.id)).to eq(812500)
+      expect(invoices[1].merch_discounted_rev(merchant.id)).to eq(52500) 
+      expect(invoices[1].merch_discounted_rev(merchant2.id)).to eq(75000)
     end
 
     it 'can return the discounted revenue total for an invoice' do 

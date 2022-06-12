@@ -12,17 +12,17 @@ class Invoice < ApplicationRecord
     invoice_items.sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
-  def total_merch_rev(merchant)
-    items.where(merchant_id: merchant.id)
+  def total_merch_rev(merchant_id)
+    items.where(merchant_id: merchant_id)
     .sum('invoice_items.unit_price * invoice_items.quantity')
   end
 
-  def merch_invoice_items(merchant)
-    invoice_items.joins(:item).where(items: {merchant_id: merchant.id})
+  def merch_invoice_items(merchant_id)
+    invoice_items.joins(:item).where(items: {merchant_id: merchant_id})
   end
 
-  def merch_discounted_rev(merchant)
-    merch_invoice_items(merchant).sum { |invoice_item| invoice_item.discounted_rev }
+  def merch_discounted_rev(merchant_id)
+    merch_invoice_items(merchant_id).sum { |invoice_item| invoice_item.discounted_rev }
   end
 
   def discounted_revenue

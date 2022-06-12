@@ -89,7 +89,7 @@ RSpec.describe 'Admin Invoice Show Page', type: :feature do
       visit invoice_path(invoices[1].id)
       within "#leftSide2" do 
         expect(page).to have_content('Total Revenue: $750.00')
-        expect(page).to have_content('Total Discounted Revenue: $562.50')
+        expect(page).to have_content('Total Discounted Revenue: $525.00')
       end
     end
   end
