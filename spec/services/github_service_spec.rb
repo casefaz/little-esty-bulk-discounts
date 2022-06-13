@@ -1,5 +1,5 @@
 # require 'rails_helper'
-#
+
 # RSpec.describe GithubService do
 #   # stories live here
 #   describe 'endpoint consumption' do # endpoint is anything after the dot.com

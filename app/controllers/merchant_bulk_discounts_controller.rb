@@ -2,8 +2,7 @@ class MerchantBulkDiscountsController < ApplicationController
   def index 
     # binding.pry
     @merchant = Merchant.find(params[:merchant_id])
-    @conn = Faraday.get('https://date.nager.at/api/v3/NextPublicHolidays/us')
-    binding.pry
+    @holidays = HolidayFacade.holiday_information
   end
 
   def show
