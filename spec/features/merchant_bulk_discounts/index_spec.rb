@@ -134,7 +134,7 @@ RSpec.describe 'Merchant Bulk Discount Index Page', type: :feature do
     it 'has a section that shows the next 3 upcoming holidays' do 
       merch = create(:merchant)
       visit merchant_bulk_discounts_path(merch.id)
-
+      save_and_open_page
       expect(page).to have_content('Upcoming Holidays')
       expect(page).to have_content(Holiday.first)
       expect(page).to have_content(Holiday.second)
