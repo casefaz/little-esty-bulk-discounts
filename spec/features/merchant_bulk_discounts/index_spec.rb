@@ -136,10 +136,7 @@ RSpec.describe 'Merchant Bulk Discount Index Page', type: :feature do
       visit merchant_bulk_discounts_path(merch.id)
       save_and_open_page
       expect(page).to have_content('Upcoming Holidays')
-      expect(page).to have_content(Holiday.first)
-      expect(page).to have_content(Holiday.second)
-      expect(page).to have_content(Holiday.third)
-      expect(page).to_not have_content(Holiday.fourth)
+      expect().to eq(3)
     end
   end
 end
