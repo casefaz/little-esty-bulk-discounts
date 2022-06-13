@@ -40,7 +40,7 @@
       <th><h4> Unit Price </h4></th>
       <th><h4> Status </h4></th>
     </tr>
-      <% @invoice.invoice_items.each do |invoice_item| %>
+      <% @invoice.merch_invoice_items(@merchant.id).each do |invoice_item| %>
         <tr id="invoiceItem-<%= invoice_item.id %>">
           <td> <%= invoice_item.item.name %></td>
           <td> 

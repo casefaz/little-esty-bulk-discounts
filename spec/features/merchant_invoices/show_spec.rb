@@ -1,41 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
-  # let!(:merchants) { create_list(:merchant, 2) }
-  # let!(:customers) { create_list(:customer, 6) }
-
-  # before :each do
-  #   @items = merchants.flat_map do |merchant|
-  #     create_list(:item, 2, merchant: merchant)
-  #   end
-
-  #   @invoices = customers.flat_map do |customer|
-  #     create_list(:invoice, 2, customer: customer)
-  #   end
-
-  #   @transactions = @invoices.each_with_index.flat_map do |invoice, index|
-  #     if index < 2
-  #       create_list(:transaction, 2, invoice: invoice, result: 1)
-  #     else
-  #       create_list(:transaction, 2, invoice: invoice, result: 0)
-  #     end
-  #   end
-
-  # end
-  # let!(:invoice_item1) { create(:invoice_item, item: @items[0], invoice: @invoices[0], status: 0) }
-  # let!(:invoice_item2) { create(:invoice_item, item: @items[1], invoice: @invoices[1], status: 1) }
-  # let!(:invoice_item3) { create(:invoice_item, item: @items[0], invoice: @invoices[2], status: 1) }
-  # let!(:invoice_item4) { create(:invoice_item, item: @items[1], invoice: @invoices[3], status: 0) }
-  # let!(:invoice_item5) { create(:invoice_item, item: @items[0], invoice: @invoices[4], status: 0) }
-  # let!(:invoice_item6) { create(:invoice_item, item: @items[1], invoice: @invoices[5], status: 1) }
-  # let!(:invoice_item7) { create(:invoice_item, item: @items[0], invoice: @invoices[6], status: 1) }
-  # let!(:invoice_item8) { create(:invoice_item, item: @items[1], invoice: @invoices[7], status: 1) }
-  # let!(:invoice_item9) { create(:invoice_item, item: @items[0], invoice: @invoices[8], status: 1) }
-  # let!(:invoice_item10) { create(:invoice_item, item: @items[1], invoice: @invoices[9], status: 0) }
-  # let!(:invoice_item11) { create(:invoice_item, item: @items[0], invoice: @invoices[10], status: 2) }
-  # let!(:invoice_item12) { create(:invoice_item, item: @items[2], invoice: @invoices[11], status: 1) }
-  # let!(:invoice_item13) { create(:invoice_item, item: @items[2], invoice: @invoices[0], status: 1) }
-
   describe 'Merchant_Invoices User Story 2' do
     it "can display all information related to an invoice" do
       merchant = create(:merchant)
@@ -186,13 +151,16 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
   end
 
   describe 'Merchant Invoice: Total Revenue and Discounted Revenue' do 
-    it 'displays the total revenue for a merchant pre discount' do 
+    it 'displays the total revenue for a particular merchant pre discount' do 
       merchant = create(:merchant)
+      merchant2 = create(:merchant)
       items = create_list(:item, 2, merchant: merchant)
+      item3 = create(:item, merchant: merchant2)
       invoices = create_list(:invoice, 3)
       invoice_item1 = create(:invoice_item, item: items[0], invoice: invoices[2], unit_price: 50000, quantity: 20)
       invoice_item2 = create(:invoice_item, item: items[1], invoice: invoices[2], unit_price: 2500, quantity: 5)
       invoice_item3 = create(:invoice_item, item: items[1], invoice: invoices[1], unit_price: 3000, quantity: 25)
+      invoice_item4 = create(:invoice_item, item: item3, invoice: invoices[2], unit_price: 40000, quantity: 30)
       bulk1 = create(:bulk_discount, merchant: merchant)
       bulk2 = create(:bulk_discount, quantity_threshold: 25, percentage: 30.0, merchant: merchant)
 
@@ -200,6 +168,8 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
       expect(page).to have_content("Total Revenue for #{merchant.name} Before Discount: $10,125.00") 
       expect(page).to have_content("Total Revenue for #{merchant.name} After Discount: $8,125.00")
       expect(page).to_not have_content("Total Revenue for #{merchant.name}: $25.00")
+      expect(page).to_not have_content("#{merchant2.name}")
+      expect(page).to_not have_content(item3.name)
     end
   end
 

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe 'merchant bulk discount index page', type: :feature do 
-  describe 'bulk discounts index' do 
-    it 'displays all the attributes of the bulk discounts' do 
+RSpec.describe 'Merchant Bulk Discount Index Page', type: :feature do 
+  describe 'Bulk Discounts Index' do 
+    it 'displays all the attributes of the bulk discounts belonging to associated merchant' do 
       merch = create(:merchant)
       merch2 = create(:merchant)
 
@@ -62,11 +62,13 @@ RSpec.describe 'merchant bulk discount index page', type: :feature do
         click_link "##{bulk3.id} Discount Information"
       end
       expect(current_path).to eq("/merchants/#{merch.id}/bulk_discounts/#{bulk3.id}")
-      expect(page).to_not have_link "##{bulk4.id} Discount Information"
+      expect(page).to have_content(bulk3.percentage)
+      expect(page).to have_content(bulk3.quantity_threshold)
+      expect(page).to_not have_content "##{bulk4.id} Discount Information"
     end
   end
 
-  describe 'merchant bulk discount create' do 
+  describe 'Merchant Bulk Discount Create' do 
     it 'has a link to create a new discount' do
       merch = create(:merchant)
       visit merchant_bulk_discounts_path(merch.id)
@@ -76,7 +78,7 @@ RSpec.describe 'merchant bulk discount index page', type: :feature do
     end
   end
 
-  describe 'merchant bulk index delete' do 
+  describe 'Merchant Bulk Index Delete' do 
     it 'has a link to delete the discount' do 
       merch = create(:merchant)
 
@@ -125,6 +127,19 @@ RSpec.describe 'merchant bulk discount index page', type: :feature do
       expect(page).to_not have_selector("#discount-#{bulk1.id}")
       expect(page).to have_selector("#discount-#{bulk2.id}")
       expect(page).to have_content('Successful Destruction of Discount')
+    end
+  end
+
+  describe 'API Fetch' do 
+    it 'has a section that shows the next 3 upcoming holidays' do 
+      merch = create(:merchant)
+      visit merchant_bulk_discounts_path(merch.id)
+
+      expect(page).to have_content('Upcoming Holidays')
+      expect(page).to have_content(Holiday.first)
+      expect(page).to have_content(Holiday.second)
+      expect(page).to have_content(Holiday.third)
+      expect(page).to_not have_content(Holiday.fourth)
     end
   end
 end
