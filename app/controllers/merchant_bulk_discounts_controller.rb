@@ -1,12 +1,10 @@
 class MerchantBulkDiscountsController < ApplicationController
   def index 
-    # binding.pry
     @merchant = Merchant.find(params[:merchant_id])
     @holidays = HolidayFacade.holiday_information
   end
 
   def show
-    # binding.pry
     @merchant = Merchant.find(params[:merchant_id])
     @discount = BulkDiscount.find(params[:id])
   end

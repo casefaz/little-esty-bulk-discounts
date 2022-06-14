@@ -1,21 +1,23 @@
 <h3>Bulk Discounts</h3>
 
+<h5>Belonging to <%= @merchant.name %></h5>
+
 <% @merchant.bulk_discounts.each do |disc| %>
 <div id="discount-<%= disc.id %>">
   <p>Discount: %<%= disc.percentage %></p>
   <p>Max Quantity: <%= disc.quantity_threshold %></p>
-  <%= link_to "##{disc.id} Discount Information", "/merchants/#{@merchant.id}/bulk_discounts/#{disc.id}" %><br></br>
+  <%= link_to "##{disc.id} Discount Information", "/merchants/#{@merchant.id}/bulk_discounts/#{disc.id}" %><br><br>
   <%= link_to "Delete Discount ##{disc.id}", "/merchants/#{@merchant.id}/bulk_discounts/#{disc.id}", method: :delete %>
   </div>
 <% end %>
-<%= link_to 'Create New Discount', new_merchant_bulk_discount_path(@merchant.id) %>
+<p><%= link_to 'Create New Discount', new_merchant_bulk_discount_path(@merchant.id) %></p>
 <% flash.each do |type, msg| %>
   <div>
     <%= msg %>
   </div>
 <% end %>
 
-<h5>Upcoming Holidays</h5>
+<h4>Upcoming Holidays</h4>
 <% @holidays.each do |holiday| %>
   name: <%= holiday.name %><br>
   date: <%= holiday.date %><br><br>
