@@ -1,6 +1,6 @@
 <%= render partial: 'form', locals: {model: [@merchant, @discount]}%>
 <% flash.each do |type, msg| %>
   <div>
-    <%= msg %>
+    <strong><%= msg %></strong>
   </div>
 <% end %>

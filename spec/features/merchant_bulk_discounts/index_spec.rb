@@ -14,6 +14,8 @@ RSpec.describe 'Merchant Bulk Discount Index Page', type: :feature do
       visit merchant_bulk_discounts_path(merch.id)
 
       expect(page).to have_content("Bulk Discounts")
+      expect(page).to have_content(merch.name)
+      expect(page).to_not have_content(merch2.name)
 
       within "#discount-#{bulk1.id}" do 
         expect(page).to have_content('Discount: %20')
@@ -47,12 +49,14 @@ RSpec.describe 'Merchant Bulk Discount Index Page', type: :feature do
         expect(page).to have_content('Discount: %20')
         expect(page).to have_content('Max Quantity: 10')
         expect(page).to have_link("##{bulk1.id} Discount Information")
+        expect(page).to_not have_link("##{bulk2.id} Discount Information")
       end
 
       within "#discount-#{bulk2.id}" do 
         expect(page).to have_content('Discount: %15')
         expect(page).to have_content('Max Quantity: 5')
         expect(page).to have_link("##{bulk2.id} Discount Information")
+        expect(page).to_not have_link("##{bulk3.id} Discount Information")
       end
 
       within "#discount-#{bulk3.id}" do 
