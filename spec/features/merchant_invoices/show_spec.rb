@@ -86,7 +86,7 @@ RSpec.describe 'Merchant_Invoices Show Page', type: :feature do
 
       visit "/merchants/#{merchants[0].id}/invoices/#{invoice1.id}"
 
-      expect(page).to have_content("Total Revenue for Invoice: $#{(invoice1.total_revenue.to_f / 100).round(2)}")
+      expect(page).to have_content("Total Revenue for Invoice: $#{(invoice1.total_revenue.to_f / 100.0).round(2)}")
     end
   end
 

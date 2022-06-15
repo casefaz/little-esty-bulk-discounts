@@ -23,8 +23,8 @@
     <p><%= "Status: #{@invoice.status}" %> </p>
     <p><%= "Created on: #{@invoice.created_at.strftime("%A, %B %d, %Y")}" %></p>
     <p>Total Revenue for Invoice: <%= number_to_currency(@invoice.total_revenue / 100.0) %></p>
-    <p>Total Revenue for <%= @merchant.name %> Before Discount: <%= number_to_currency(@invoice.total_merch_rev(@merchant.id) / 100) %></p>
-    <p>Total Revenue for <%= @merchant.name %> After Discount: <%= number_to_currency(@invoice.merch_discounted_rev(@merchant.id) / 100) %></p>
+    <p>Total Revenue for <%= @merchant.name %> Before Discount: <%= number_to_currency(@invoice.total_merch_rev(@merchant.id) / 100.0) %></p>
+    <p>Total Revenue for <%= @merchant.name %> After Discount: <%= number_to_currency(@invoice.merch_discounted_rev(@merchant.id) / 100.0) %></p>
     <h2>Customer</h2>
     <p> <%= "#{@invoice.customer.first_name} #{@invoice.customer.last_name}" %></p>
   </div>
