@@ -17,18 +17,22 @@ RSpec.describe Invoice, type: :model do
   describe '#instance methods' do
     it '#total_revenue returns total revenue of an invoice' do
       merchant1 = create(:merchant)
+      merchant2 = create(:merchant)
       customer1 = create(:customer)
       item1 = create(:item, merchant: merchant1)
       item2 = create(:item, merchant: merchant1)
       item3 = create(:item, merchant: merchant1)
+      item4 = create(:item, merchant: merchant2)
       invoices = create_list(:invoice, 4, customer: customer1)
       invoice_item1 = create(:invoice_item, item: item1, invoice: invoices[0], unit_price: 3011, quantity: 35)
       invoice_item2 = create(:invoice_item, item: item2, invoice: invoices[0], unit_price: 2524, quantity: 14)
       invoice_item3 = create(:invoice_item, item: item2, invoice: invoices[1], unit_price: 2524, quantity: 16) 
       invoice_item4 = create(:invoice_item, item: item3, invoice: invoices[1], unit_price: 5000, quantity: 4)
       invoice_item5 = create(:invoice_item, item: item2, invoice: invoices[3], unit_price: 2524, quantity: 25)
+      invoice_item6 = create(:invoice_item, item: item4, invoice: invoices[0], unit_price: 1000, quantity: 1)
 
-      expect(invoices[0].total_revenue).to eq(140721)
+      expect(invoices[0].total_revenue).to eq(141721)
+      expect(invoices[0].total_revenue).to_not eq(140721) # total minus the second merchants revenue on the invoice 
       expect(invoices[1].total_revenue).to eq(60384)
     end
 
@@ -63,6 +67,7 @@ RSpec.describe Invoice, type: :model do
       invoice_item4 = create(:invoice_item, item: item3, invoice: invoices[1], unit_price: 5000, quantity: 4, status: 1) 
       invoice_item5 = create(:invoice_item, item: item4, invoice: invoices[1], unit_price: 2524, quantity: 25, status: 2)
       expect(invoices[1].total_merch_rev(merchant1.id)).to eq(60384)
+      expect(invoices[1].total_merch_rev(merchant1.id)).to_not eq(123484) # total with the second merchants revenue on the same invoice
       expect(invoices[1].total_merch_rev(merchant2.id)).to eq(63100)
     end
 
